@@ -3,11 +3,13 @@ from pathlib import Path
 import httplib2
 import pandas as pd
 from bs4 import BeautifulSoup, SoupStrainer
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 DATALINK = "https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data"
 
 
-def download_year_mortality_data(year: int) -> pd.DataFrame:
+def download_year_mortality_data(year: int):
     """
     Downloads a year's worth of data from the internet
 

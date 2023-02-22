@@ -3,4 +3,5 @@ httplib2==0.21.0
 pandas==1.5.1
 selenium==4.8.2
 notebook==6.5.2
+webdriver-manager==3.8.5
 -e .
