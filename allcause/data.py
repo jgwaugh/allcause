@@ -37,7 +37,7 @@ def download_year_mortality_data(year: int) -> pd.DataFrame:
         if link.has_attr("href"):
             if id_string in link["href"]:
                 if year == 1969:
-                    pd.read_csv(link["href"], encoding_errors='ignore')
+                    pd.read_csv(link["href"], encoding_errors="ignore")
                 else:
                     return pd.read_csv(link["href"])
 
@@ -60,8 +60,6 @@ def munge_data(df: pd.DataFrame, year: int) -> pd.DataFrame:
         Data at the month/ sex / age range level
 
     """
-
-
 
     group_cols = ["ager12", "monthdth", "sex"]
     df_grouped = (

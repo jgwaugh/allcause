@@ -1,16 +1,14 @@
+import os
 import time
+import zipfile
 from pathlib import Path
 
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
-import pandas as pd
-
-from allcause.data import munge_data, DATALINK
-
-import os
-import zipfile
+from allcause.data import DATALINK, munge_data
 
 SECONDS_SLEEP = 60 * 10
 
@@ -22,8 +20,8 @@ SECONDS_SLEEP = 60 * 10
 ##################################################
 
 path_to_cache = Path(__file__).parents[0].joinpath("allcause").joinpath("cache")
-path_to_download = '~/Downloads/mort1969.csv.zip'
-abs_path_to_download = os.popen(f'ls {path_to_download}').read().replace('\n', '')
+path_to_download = "~/Downloads/mort1969.csv.zip"
+abs_path_to_download = os.popen(f"ls {path_to_download}").read().replace("\n", "")
 
 
 ##################################################
@@ -44,7 +42,7 @@ for lnk in lnks:
             lnk.click()
             break
 
-time.sleep(SECONDS_SLEEP) # wait for download
+time.sleep(SECONDS_SLEEP)  # wait for download
 
 
 ##################################################
@@ -54,19 +52,17 @@ time.sleep(SECONDS_SLEEP) # wait for download
 ##################################################
 
 # unzip data
-with zipfile.ZipFile(abs_path_to_download, 'r') as zip_ref:
+with zipfile.ZipFile(abs_path_to_download, "r") as zip_ref:
     parent_path = Path(abs_path_to_download).parents[0]
     zip_ref.extractall(parent_path)
 
 
-data = pd.read_csv(path_to_download, encoding_errors='ignore')
+data = pd.read_csv(path_to_download, encoding_errors="ignore")
 
 data = munge_data(data, 1969)
 
-data.to_pickle(path_to_cache.joinpath('1969.pkl'))
-os.remove(abs_path_to_download) # remove zip file
-os.remove(abs_path_to_download[:-4]) # remove unzipped data
+data.to_pickle(path_to_cache.joinpath("1969.pkl"))
+os.remove(abs_path_to_download)  # remove zip file
+os.remove(abs_path_to_download[:-4])  # remove unzipped data
 
 driver.quit()
-
-
