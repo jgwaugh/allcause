@@ -21,7 +21,6 @@ SECONDS_SLEEP = 60 * 10
 path_to_cache = Path(__file__).parents[0].joinpath("allcause").joinpath("cache")
 
 
-
 ##################################################
 #
 # Download the data with Selenium
