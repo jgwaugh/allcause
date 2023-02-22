@@ -10,7 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from allcause.data import DATALINK, munge_data
 
-SECONDS_SLEEP = 60 * 10
+SECONDS_SLEEP = 60 * 3
 
 ##################################################
 #

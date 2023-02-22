@@ -27,4 +27,8 @@ downloaded the data for this year.
 
 **Before running anything, you'll want to run the script `download_1969.py`**. 
 This will download the 1969 data, munge it, and delete the downloaded
-data. Or, you could do do it manually. This is just more convienent. 
+data. Or, you could do it manually. This is just more convenient. 
+
+If this is taking a long time, adjust the `SECONDS_SLEEP` parameter in
+`download_1969.py` - the program sleeps while the file downloads. I could
+probably do this with a promise, but I've got better things to do. 
