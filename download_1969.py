@@ -12,7 +12,6 @@ from allcause.data import DATALINK, munge_data
 
 SECONDS_SLEEP = 60 * 10
 
-
 ##################################################
 #
 # Find paths where data will be downloaded to
@@ -20,8 +19,7 @@ SECONDS_SLEEP = 60 * 10
 ##################################################
 
 path_to_cache = Path(__file__).parents[0].joinpath("allcause").joinpath("cache")
-path_to_download = "~/Downloads/mort1969.csv.zip"
-abs_path_to_download = os.popen(f"ls {path_to_download}").read().replace("\n", "")
+
 
 
 ##################################################
@@ -50,6 +48,9 @@ time.sleep(SECONDS_SLEEP)  # wait for download
 # Munge the downloaded data
 #
 ##################################################
+
+path_to_download = "~/Downloads/mort1969.csv.zip"
+abs_path_to_download = os.popen(f"ls {path_to_download}").read().replace("\n", "")
 
 # unzip data
 with zipfile.ZipFile(abs_path_to_download, "r") as zip_ref:
