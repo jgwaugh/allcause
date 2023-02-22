@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup, SoupStrainer
 
 DATALINK = "https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data"
 
-
 def download_year_mortality_data(year: int) -> pd.DataFrame:
     """
     Downloads a year's worth of data from the internet
@@ -102,4 +101,7 @@ def get_yearly_mortality_data(year: int) -> pd.DataFrame:
         return data_munged
 
 
-data_1997 = get_yearly_mortality_data(1992)
+def get_all_mortality_data() -> pd.DataFrame:
+    """Loads all mortality data """
+    return pd.concat([get_yearly_mortality_data(year) for year in range(1959, 2022)])
+
