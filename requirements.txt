@@ -1,5 +1,6 @@
 bs4==4.11.2
 httplib2==0.21.0
 pandas==1.5.1
-selenium=-4.8.2
+selenium==4.8.2
+notebook==6.5.2
 -e .
