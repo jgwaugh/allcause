@@ -4,4 +4,6 @@ pandas==1.5.1
 selenium==4.8.2
 notebook==6.5.2
 seaborn==0.11.2
+plotly_express==0.4.0
+prophet==1.1.2
 -e .
