@@ -1,11 +1,8 @@
 from datetime import datetime
 from typing import List
 
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import plotly.express as px
-import seaborn as sns
 import streamlit as st
 
 from allcause.data import age_recode_map, get_all_mortality_data
@@ -85,8 +82,9 @@ st.write(
     # 2021 - 2022 All Cause Mortality Trends
     
     Expected all cause deaths follow a predictable pattern on a year by year basis - this 
-    application uses data from 2020-2019 to estimate the expected deaths in 2020 and 2021. 
-    
+    application uses data from 2020-2019 to estimate the expected deaths in 2020 and 2021. All
+    data comes from [the NBER](https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data).
+      
     Do the excess death patterns fit a respiratory virus, or is there something else at play? 
     
     ## Demographic Percentage Trends
@@ -95,13 +93,13 @@ st.write(
 )
 
 sexes_percent = st.multiselect(
-    "Select sexes to display", ["Male", "Female"], ["Male", "Female"]
+    "Select sexes to display", ["Male", "Female"], ["Male"]
 )
 
 sexes_percent = [sex_map[x] for x in sexes_percent]
 
 ages_percent = st.multiselect(
-    "Select ages to display", recode_name_list, recode_name_list
+    "Select ages to display", recode_name_list, ['25-34 years', '35-44 years', '75-84 years']
 )
 
 
