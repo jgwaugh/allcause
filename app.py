@@ -7,18 +7,20 @@ import plotly.express as px
 import seaborn as sns
 import streamlit as st
 
+from typing import List
+
 from allcause.data import age_recode_map, get_all_mortality_data
 from allcause.excess_deaths import compute_excess_deaths
 
 
-def get_excess_deaths_percentage_changes_for_all_age_ranges() -> pd.DataFrame:
+def get_excess_deaths_percentage_changes_for_all_age_ranges(columns_agg: List[str] = ["ager12", "sex"]) -> pd.DataFrame:
     """Builds out the percentage changes in all cause deaths for all age ranges"""
 
     all_excess_deaths = pd.concat(
         [trend_map[sex][recode][1] for sex in sexes for recode in recodes]
     )
     age_range_deaths = (
-        all_excess_deaths.groupby(["ager12", "sex"])[
+        all_excess_deaths.groupby(columns_agg)[
             ["expected_deaths", "excess_deaths"]
         ]
         .sum()
@@ -40,17 +42,12 @@ def get_excess_deaths_percentage_changes_for_all_age_ranges() -> pd.DataFrame:
         "% Excess Deaths Increase", ascending=False
     )
 
-    age_range_deaths = age_range_deaths.rename(
-        {
-            "ager12": "Demographic",
-        },
-        axis=1,
-    )
+
     age_range_deaths["Sex"] = age_range_deaths.sex.apply(
         lambda x: "Males" if x == "M" else "Females"
     )
     age_range_deaths["Demographic"] = age_range_deaths.apply(
-        lambda x: f"{x.Sex} age {x.Demographic}", axis=1
+        lambda x: f"{x.Sex} age {x.ager12}", axis=1
     )
 
     return age_range_deaths
@@ -65,10 +62,11 @@ def build_trend_map(recodes, sexes):
     }
 
 
-sns.set()
+sex_map = {'Male' : 'M', 'Female': 'F'}
+
 
 sexes = ["M", "F"]
-recodes = list(range(2, 6))
+recodes = list(range(2, 12))
 
 inverse_recodes = {v: k for k, v in age_recode_map.items()}
 recode_name_list = [age_recode_map[x] for x in recodes]
@@ -80,7 +78,7 @@ trend_map = build_trend_map(recodes, sexes)
 
 
 age_ranges = get_excess_deaths_percentage_changes_for_all_age_ranges()
-
+age_range_time = get_excess_deaths_percentage_changes_for_all_age_ranges(['yearmonth', 'ager12', 'sex'])
 
 st.write(
     """
@@ -90,26 +88,57 @@ st.write(
     application uses data from 2020-2019 to estimate the expected deaths in 2020 and 2021. 
     
     Do the excess death patterns fit a respiratory virus, or is there something else at play? 
+    
+    ## Demographic Percentage Trends
+    The following charts compare percentage changes in excess deaths across demographics
     """
 )
 
+sexes_percent = st.multiselect(
+    'Select sexes to display',
+    ['Male', 'Female'],
+    ['Male', 'Female']
+    )
 
-fig = px.bar(
-    age_ranges,
+sexes_percent = [sex_map[x] for x in sexes_percent]
+
+ages_percent = st.multiselect(
+    'Select ages to display',
+    recode_name_list,
+    recode_name_list
+    )
+
+
+age_range_plt = age_ranges[age_ranges.sex.isin(sexes_percent) & age_ranges.ager12.isin(ages_percent)]
+fig = px.bar(age_range_plt,
     y="Demographic",
     x="% Excess Deaths Increase",
     orientation="h",
     title="% Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
 )
 
-st.plotly_chart(fig)
+st.plotly_chart(fig, caption = 'Embiggen the chart to see all demographics')
+
+age_range_time = age_range_time.rename({'yearmonth': 'Month'}, axis=1).sort_values(
+    ['Demographic', 'Month'])
+monthly_fig = px.line(age_range_time[age_range_time.sex.isin(sexes_percent) & age_range_time.ager12.isin(ages_percent)],
+                      x="Month",
+                      y="% Excess Deaths Increase",
+                      color='Demographic',
+                      title="Monthly % Changes in Excess Deaths 2020-2021 from 2020-2019 Trends")
+
+st.plotly_chart(monthly_fig)
+
+
+
+st.write("""
+## Isolated Trends
+This section of the app displays trends for individual demographic groups
+""")
 
 sex = st.selectbox("Select a Sex to View In Depth Charts", ["Male", "Female"])
 
-if sex == "Male":
-    sex_coded = "M"
-else:
-    sex_coded = "F"
+sex_coded = sex_map[sex]
 
 recode = st.selectbox("Select an Age Range to View In Depth Charts", recode_name_list)
 

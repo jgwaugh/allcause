@@ -34,3 +34,7 @@ to run this script.
 If this is taking a long time, adjust the `SECONDS_SLEEP` parameter in
 `download_1969.py` - the program sleeps while the file downloads. I could
 probably do this with a promise, but I've got better things to do. 
+
+## Running
+
+To view excess death data, run `streamlit run app.py` in a terminal shell. 

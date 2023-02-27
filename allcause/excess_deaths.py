@@ -3,12 +3,10 @@ from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
 from prophet import Prophet
 
 from allcause.data import age_recode_map
 
-sns.set()
 
 sex_map = {"M": "Males", "F": "Females"}
 
