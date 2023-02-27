@@ -17,7 +17,16 @@ conda create allcause python=3.9.16 && conda activate allcause
 To install requirements, run `pip install -r requirements.txt`
 
 ## Data 
+### Programatic Download
 
+Run 
+```
+source get_data.sh
+```
+
+in the command line. 
+
+### Explanation
 The files are cumbersome to download. This will take a while. You'll
 be able to download most of them using the `get_all_mortality_data`
 in the `allcause` package. The only exception is for the year 1969.

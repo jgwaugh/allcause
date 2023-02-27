@@ -92,14 +92,14 @@ st.write(
     """
 )
 
-sexes_percent = st.multiselect(
-    "Select sexes to display", ["Male", "Female"], ["Male"]
-)
+sexes_percent = st.multiselect("Select sexes to display", ["Male", "Female"], ["Male"])
 
 sexes_percent = [sex_map[x] for x in sexes_percent]
 
 ages_percent = st.multiselect(
-    "Select ages to display", recode_name_list, ['25-34 years', '35-44 years', '75-84 years']
+    "Select ages to display",
+    recode_name_list,
+    ["25-34 years", "35-44 years", "75-84 years"],
 )
 
 
