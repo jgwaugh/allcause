@@ -108,3 +108,17 @@ def get_yearly_mortality_data(year: int) -> pd.DataFrame:
 def get_all_mortality_data() -> pd.DataFrame:
     """Loads all mortality data"""
     return pd.concat([get_yearly_mortality_data(year) for year in range(1959, 2022)])
+
+def get_vaccination_data() -> pd.DataFrame:
+    """Gets the vaccination data
+    Data comes from here: https://data.cdc.gov/Vaccinations/Archive-COVID-19-Vaccination-and-Case-Trends-by-Ag/gxj9-t96f
+    """
+    data = pd.read_csv(path_to_cache().joinpath('vaccination_data.csv'))
+    data['date'] = data['Date Administered'].map(pd.to_datetime)
+    data['day'] = data.date.map(lambda x: x.day)
+    return data
+def get_covid_data() -> pd.DataFrame:
+    """Gets the COVID data, which also has some all cause data
+    Data comes from here: https://data.cdc.gov/NCHS/Provisional-COVID-19-Deaths-by-Week-Sex-and-Age/vsak-wrfu
+    """
+    return pd.read_csv(path_to_cache().joinpath('covid_deaths.csv'))
