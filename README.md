@@ -27,7 +27,9 @@ downloaded the data for this year.
 
 **Before running anything, you'll want to run the script `download_1969.py`**. 
 This will download the 1969 data, munge it, and delete the downloaded
-data. Or, you could do it manually. This is just more convenient. 
+data. Or, you could do it manually. This is just more convenient. You will 
+need to [install Google Chrome](https://www.google.com/chrome/dr/download/?brand=SLLM&geo=US&gclid=CjwKCAiAxvGfBhB-EiwAMPakqqmyw6YWuXBhWu9TCAEIlccn-nrh3fC6w6p1mlhsbEovVZlgVwhG9RoCzNwQAvD_BwE&gclsrc=aw.ds)
+to run this script. 
 
 If this is taking a long time, adjust the `SECONDS_SLEEP` parameter in
 `download_1969.py` - the program sleeps while the file downloads. I could
