@@ -121,9 +121,10 @@ def get_yearly_mortality_data(year: int) -> pd.DataFrame:
         return data_munged
 
 
-def get_all_mortality_data() -> pd.DataFrame:
+def get_all_mortality_data(year_start:int=2000,
+                           year_end:int=2022) -> pd.DataFrame:
     """Loads all mortality data"""
-    return pd.concat([get_yearly_mortality_data(year) for year in range(1959, 2022)])
+    return pd.concat([get_yearly_mortality_data(year) for year in range(year_start, year_end)])
 
 
 def get_vaccination_data() -> pd.DataFrame:
