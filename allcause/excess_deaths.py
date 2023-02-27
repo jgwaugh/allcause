@@ -7,7 +7,6 @@ from prophet import Prophet
 
 from allcause.data import age_recode_map
 
-
 sex_map = {"M": "Males", "F": "Females"}
 
 image = plt.figure

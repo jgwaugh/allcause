@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,22 +8,20 @@ import plotly.express as px
 import seaborn as sns
 import streamlit as st
 
-from typing import List
-
 from allcause.data import age_recode_map, get_all_mortality_data
 from allcause.excess_deaths import compute_excess_deaths
 
 
-def get_excess_deaths_percentage_changes_for_all_age_ranges(columns_agg: List[str] = ["ager12", "sex"]) -> pd.DataFrame:
+def get_excess_deaths_percentage_changes_for_all_age_ranges(
+    columns_agg: List[str] = ["ager12", "sex"]
+) -> pd.DataFrame:
     """Builds out the percentage changes in all cause deaths for all age ranges"""
 
     all_excess_deaths = pd.concat(
         [trend_map[sex][recode][1] for sex in sexes for recode in recodes]
     )
     age_range_deaths = (
-        all_excess_deaths.groupby(columns_agg)[
-            ["expected_deaths", "excess_deaths"]
-        ]
+        all_excess_deaths.groupby(columns_agg)[["expected_deaths", "excess_deaths"]]
         .sum()
         .reset_index()
     )
@@ -41,7 +40,6 @@ def get_excess_deaths_percentage_changes_for_all_age_ranges(columns_agg: List[st
     age_range_deaths = age_range_deaths.sort_values(
         "% Excess Deaths Increase", ascending=False
     )
-
 
     age_range_deaths["Sex"] = age_range_deaths.sex.apply(
         lambda x: "Males" if x == "M" else "Females"
@@ -62,7 +60,7 @@ def build_trend_map(recodes, sexes):
     }
 
 
-sex_map = {'Male' : 'M', 'Female': 'F'}
+sex_map = {"Male": "M", "Female": "F"}
 
 
 sexes = ["M", "F"]
@@ -78,7 +76,9 @@ trend_map = build_trend_map(recodes, sexes)
 
 
 age_ranges = get_excess_deaths_percentage_changes_for_all_age_ranges()
-age_range_time = get_excess_deaths_percentage_changes_for_all_age_ranges(['yearmonth', 'ager12', 'sex'])
+age_range_time = get_excess_deaths_percentage_changes_for_all_age_ranges(
+    ["yearmonth", "ager12", "sex"]
+)
 
 st.write(
     """
@@ -95,46 +95,52 @@ st.write(
 )
 
 sexes_percent = st.multiselect(
-    'Select sexes to display',
-    ['Male', 'Female'],
-    ['Male', 'Female']
-    )
+    "Select sexes to display", ["Male", "Female"], ["Male", "Female"]
+)
 
 sexes_percent = [sex_map[x] for x in sexes_percent]
 
 ages_percent = st.multiselect(
-    'Select ages to display',
-    recode_name_list,
-    recode_name_list
-    )
+    "Select ages to display", recode_name_list, recode_name_list
+)
 
 
-age_range_plt = age_ranges[age_ranges.sex.isin(sexes_percent) & age_ranges.ager12.isin(ages_percent)]
-fig = px.bar(age_range_plt,
+age_range_plt = age_ranges[
+    age_ranges.sex.isin(sexes_percent) & age_ranges.ager12.isin(ages_percent)
+]
+fig = px.bar(
+    age_range_plt,
     y="Demographic",
     x="% Excess Deaths Increase",
     orientation="h",
     title="% Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
 )
 
-st.plotly_chart(fig, caption = 'Embiggen the chart to see all demographics')
+st.plotly_chart(fig, caption="Embiggen the chart to see all demographics")
 
-age_range_time = age_range_time.rename({'yearmonth': 'Month'}, axis=1).sort_values(
-    ['Demographic', 'Month'])
-monthly_fig = px.line(age_range_time[age_range_time.sex.isin(sexes_percent) & age_range_time.ager12.isin(ages_percent)],
-                      x="Month",
-                      y="% Excess Deaths Increase",
-                      color='Demographic',
-                      title="Monthly % Changes in Excess Deaths 2020-2021 from 2020-2019 Trends")
+age_range_time = age_range_time.rename({"yearmonth": "Month"}, axis=1).sort_values(
+    ["Demographic", "Month"]
+)
+monthly_fig = px.line(
+    age_range_time[
+        age_range_time.sex.isin(sexes_percent)
+        & age_range_time.ager12.isin(ages_percent)
+    ],
+    x="Month",
+    y="% Excess Deaths Increase",
+    color="Demographic",
+    title="Monthly % Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
+)
 
 st.plotly_chart(monthly_fig)
 
 
-
-st.write("""
+st.write(
+    """
 ## Isolated Trends
 This section of the app displays trends for individual demographic groups
-""")
+"""
+)
 
 sex = st.selectbox("Select a Sex to View In Depth Charts", ["Male", "Female"])
 
