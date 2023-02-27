@@ -1,11 +1,10 @@
+import os
 from datetime import datetime
 from pathlib import Path
 
 import httplib2
 import pandas as pd
 from bs4 import BeautifulSoup, SoupStrainer
-
-import os
 
 DATALINK = "https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data"
 
@@ -98,8 +97,6 @@ def path_to_cache() -> Path:
     if not os.path.exists(path):
         os.makedirs(path)
     return path
-
-
 
 
 def get_yearly_mortality_data(year: int) -> pd.DataFrame:
