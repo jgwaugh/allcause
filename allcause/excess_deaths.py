@@ -12,7 +12,7 @@ sex_map = {"M": "Males", "F": "Females"}
 image = plt.figure
 
 
-def compute_execss_deaths(
+def compute_excess_deaths(
     agerecode: int,
     sex: str,
     data: pd.DataFrame,
@@ -68,6 +68,7 @@ def compute_execss_deaths(
     plt.plot(test["ds"], test["y"], color="red")
     plt.xlabel("Year")
     plt.ylabel("All Cause Deaths")
+    plt.title(f"All Cause Death Trends for {sex_map[sex]} aged {age_recode_map[agerecode]}")
 
     future_forecast = forecast[forecast.ds >= datetime(2020, 1, 1)]
     excess_deaths = test["y"].values - future_forecast["yhat"].values
