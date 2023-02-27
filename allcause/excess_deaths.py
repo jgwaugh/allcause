@@ -3,11 +3,10 @@ from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 from prophet import Prophet
 
 from allcause.data import age_recode_map
-
-import seaborn as sns
 
 sns.set()
 
