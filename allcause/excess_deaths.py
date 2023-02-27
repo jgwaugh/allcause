@@ -68,7 +68,9 @@ def compute_excess_deaths(
     plt.plot(test["ds"], test["y"], color="red")
     plt.xlabel("Year")
     plt.ylabel("All Cause Deaths")
-    plt.title(f"All Cause Death Trends for {sex_map[sex]} aged {age_recode_map[agerecode]}")
+    plt.title(
+        f"All Cause Death Trends for {sex_map[sex]} aged {age_recode_map[agerecode]}"
+    )
 
     future_forecast = forecast[forecast.ds >= datetime(2020, 1, 1)]
     excess_deaths = test["y"].values - future_forecast["yhat"].values
