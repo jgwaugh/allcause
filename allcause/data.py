@@ -5,6 +5,8 @@ import httplib2
 import pandas as pd
 from bs4 import BeautifulSoup, SoupStrainer
 
+import os
+
 DATALINK = "https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data"
 
 age_recode_map = {
@@ -92,7 +94,12 @@ def munge_data(df: pd.DataFrame, year: int) -> pd.DataFrame:
 
 def path_to_cache() -> Path:
     """Path to the data cache"""
-    return Path(__file__).parents[0].joinpath("cache")
+    path = Path(__file__).parents[0].joinpath("cache")
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
+
+
 
 
 def get_yearly_mortality_data(year: int) -> pd.DataFrame:
