@@ -181,4 +181,7 @@ def get_cdc_all_cause() -> pd.DataFrame:
         lambda x: inverse_recode_map[x]
     )
     cdc_all_cause["sex"] = cdc_all_cause["sex"].map(lambda x: x[0])
+    cdc_all_cause = cdc_all_cause.drop('covid_deaths', axis=1)
+    cdc_all_cause['monthdth'] = cdc_all_cause.yearmonth.apply(lambda x: x.month)
+    cdc_all_cause['year'] = cdc_all_cause.yearmonth.apply(lambda x: x.year)
     return cdc_all_cause
