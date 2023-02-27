@@ -1,26 +1,27 @@
+from datetime import datetime
 from pathlib import Path
 
 import httplib2
 import pandas as pd
 from bs4 import BeautifulSoup, SoupStrainer
-from datetime import datetime
 
 DATALINK = "https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data"
 
 age_recode_map = {
-    1 : '<1 year',
-    2 : '1-4 years',
-    3 : '5-14 years',
-    4 : '15-24 years',
-    5 : '25-34 years',
-    6 : '35-44 years',
-    7 : '45-54 years',
-    8 : '55-64 years',
-    9 : '65-74 years',
-    10 : '75-84 years',
-    11 : '85+ years',
-    12 : 'Age not stated'
+    1: "<1 year",
+    2: "1-4 years",
+    3: "5-14 years",
+    4: "15-24 years",
+    5: "25-34 years",
+    6: "35-44 years",
+    7: "45-54 years",
+    8: "55-64 years",
+    9: "65-74 years",
+    10: "75-84 years",
+    11: "85+ years",
+    12: "Age not stated",
 }
+
 
 def download_year_mortality_data(year: int) -> pd.DataFrame:
     """
@@ -141,28 +142,43 @@ def get_covid_data() -> pd.DataFrame:
     """
     return pd.read_csv(path_to_cache().joinpath("covid_deaths.csv"))
 
+
 def get_cdc_all_cause() -> pd.DataFrame:
     """Loads the cdc all covid data and uses it to compute all cause data (no all cause yet for 2022)"""
     cdc_all_cause = get_covid_data()
-    cdc_all_cause['End Week'] = cdc_all_cause['End Week'].map(pd.to_datetime)
-    cdc_all_cause['yearmonth'] = cdc_all_cause['End Week'].map(lambda x: datetime(x.year, x.month, 1))
-    cdc_all_cause = cdc_all_cause[cdc_all_cause.Sex.isin(['Male', 'Female']) &
-                            (cdc_all_cause.State == 'United States')]
-    cdc_all_cause = cdc_all_cause.rename({'Total Deaths': 'death_count',
-                                    'COVID-19 Deaths': 'covid_deaths',
-                                    'Sex': 'sex'},
-                                   axis=1)
+    cdc_all_cause["End Week"] = cdc_all_cause["End Week"].map(pd.to_datetime)
+    cdc_all_cause["yearmonth"] = cdc_all_cause["End Week"].map(
+        lambda x: datetime(x.year, x.month, 1)
+    )
+    cdc_all_cause = cdc_all_cause[
+        cdc_all_cause.Sex.isin(["Male", "Female"])
+        & (cdc_all_cause.State == "United States")
+    ]
+    cdc_all_cause = cdc_all_cause.rename(
+        {
+            "Total Deaths": "death_count",
+            "COVID-19 Deaths": "covid_deaths",
+            "Sex": "sex",
+        },
+        axis=1,
+    )
 
-    cdc_all_cause = cdc_all_cause.groupby(['sex', 'Age Group', 'yearmonth']) \
-        [['death_count', 'covid_deaths']].sum().reset_index()
+    cdc_all_cause = (
+        cdc_all_cause.groupby(["sex", "Age Group", "yearmonth"])[
+            ["death_count", "covid_deaths"]
+        ]
+        .sum()
+        .reset_index()
+    )
 
-
-    cdc_all_cause['Age Group'] = cdc_all_cause['Age Group'].map(lambda x:
-                                                      x.lower().replace('under ', '<').replace(' years and over',
-                                                                                             '+ years'))
+    cdc_all_cause["Age Group"] = cdc_all_cause["Age Group"].map(
+        lambda x: x.lower().replace("under ", "<").replace(" years and over", "+ years")
+    )
     inverse_recode_map = {v: k for k, v in age_recode_map.items()}
-    cdc_all_cause = cdc_all_cause.rename({'Age Group': 'ager12'}, axis=1)
-    cdc_all_cause = cdc_all_cause[cdc_all_cause.ager12 != 'all ages']
-    cdc_all_cause['ager12'] = cdc_all_cause['ager12'].map(lambda x: inverse_recode_map[x])
-    cdc_all_cause['sex'] = cdc_all_cause['sex'].map(lambda x: x[0])
+    cdc_all_cause = cdc_all_cause.rename({"Age Group": "ager12"}, axis=1)
+    cdc_all_cause = cdc_all_cause[cdc_all_cause.ager12 != "all ages"]
+    cdc_all_cause["ager12"] = cdc_all_cause["ager12"].map(
+        lambda x: inverse_recode_map[x]
+    )
+    cdc_all_cause["sex"] = cdc_all_cause["sex"].map(lambda x: x[0])
     return cdc_all_cause
