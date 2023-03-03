@@ -15,7 +15,8 @@ actual deaths in red for this time frame:
 
 Most of the data used comes from the National Bureau of Economic Research with
 2022 estimates coming from the Centers for Disease Control. CDC data
-was used when NBER data was unavailable. 
+was used when NBER data was unavailable. For more information on this
+data transformation, see [here](modeling/nber_data_approximation.ipynb).
 
 
 ## Setup
