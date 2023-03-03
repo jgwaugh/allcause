@@ -216,7 +216,7 @@ def get_nber_2022_all_cause_approximation() -> pd.DataFrame:
     """
     cdc_data = get_cdc_all_cause()
     model = joblib.load(path_to_cache().joinpath("nber_data_approximator"))
-    cdc_data = cdc_data[cdc_data.year == 2022]
+    cdc_data = cdc_data[(cdc_data.year == 2022) & (cdc_data.ager12 != 12)]
     cdc_data = cdc_data.rename({"death_count": "cdc_death_count"}, axis=1)
 
     cdc_data["death_count"] = model.predict(cdc_data)

@@ -60,7 +60,7 @@ def compute_excess_deaths(
 
     m.fit(train)
 
-    future = m.make_future_dataframe(periods=25, freq="M")
+    future = m.make_future_dataframe(periods=12 * len(years_test) + 1, freq="M")
     future["ds"] = future.ds.apply(lambda x: datetime(x.year, x.month, 1))
     forecast = m.predict(future)
 
