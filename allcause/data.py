@@ -130,10 +130,12 @@ def get_all_mortality_data(
     year_start: int = 2000, year_end: int = 2022
 ) -> pd.DataFrame:
     """Loads all mortality data"""
-    return pd.concat(
-        [get_yearly_mortality_data(year) for year in range(year_start, year_end)]
-    )
 
+    years = [get_yearly_mortality_data(year) for year in range(year_start, min(year_end, 2022))]
+
+    if year_end == 2023:
+        years += [get_nber_2022_all_cause_approximation()]
+    return pd.concat(years)
 
 def get_vaccination_data() -> pd.DataFrame:
     """Gets the vaccination data
