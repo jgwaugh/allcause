@@ -71,7 +71,7 @@ recodes = list(range(2, 12))
 inverse_recodes = {v: k for k, v in age_recode_map.items()}
 recode_name_list = [age_recode_map[x] for x in recodes]
 
-data = get_all_mortality_data()
+data = get_all_mortality_data(year_end=2023)
 data["yearmonth"] = data.apply(lambda x: datetime(x.year, x.monthdth, 1), axis=1)
 
 trend_map = build_trend_map(recodes, sexes)
@@ -116,7 +116,7 @@ fig = px.bar(
     y="Demographic",
     x="% Excess Deaths Increase",
     orientation="h",
-    title="% Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
+    title="% Changes in Excess Deaths 2020-2022 from 2020-2019 Trends",
 )
 
 st.plotly_chart(fig, caption="Embiggen the chart to see all demographics")
@@ -132,7 +132,7 @@ monthly_fig = px.line(
     x="Month",
     y="% Excess Deaths Increase",
     color="Demographic",
-    title="Monthly % Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
+    title="Monthly % Changes in Excess Deaths 2020-2022 from 2020-2019 Trends",
 )
 
 st.plotly_chart(monthly_fig)
