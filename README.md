@@ -5,7 +5,7 @@ The basic idea is that all cause mortality follows relatively predictable
 trends on a seasonal and yearly basis - excess deaths can be computed
 by subtracting the expected trend from actual deaths. This methodology 
 is not impacted by reporting bias and can be used to evaluate the excess
-loss of life from 2020 - 2022. 
+loss of life from 2020 - 2022. Expected trends were estimated using [facebook-prophet](https://facebook.github.io/prophet/).
 
 For example, the chart below shows the expected deaths in blue and the
 actual deaths in red for this time frame:
