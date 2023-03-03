@@ -17,19 +17,27 @@ conda create allcause python=3.9.16 && conda activate allcause
 To install requirements, run `pip install -r requirements.txt`
 
 ## Data 
-### Programatic Download
 
-Run 
+### Downloading 2022 Data
+
+To download the CDC data for 2022, run the following `source download_cdc.py`.
+This should be fairly quick. 
+
+### NBER Programatic Download
+
+NBER data takes a while to download. To get everything, run
+ 
 ```
 source get_data.sh
 ```
 
 in the command line. 
-**If you don't need data from 1969, you can skip this step.**2
+**If you don't need data from 1969, you can skip this step. Just expect
+long wait times in the app as you will be downloading data when you first 
+run it.**
 
-### Explanation
-The files are cumbersome to download. This will take a while. You'll
-be able to download most of them using the `get_all_mortality_data`
+#### Explanation
+Most files can be download using the `get_all_mortality_data`
 in the `allcause` package. The only exception is for the year 1969.
 I hit some `utf-8` encoding errors when calling `pandas.read_csv`
 on the link of the data but was able to circumvent them when I manually 
