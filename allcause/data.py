@@ -159,7 +159,7 @@ def get_covid_data() -> pd.DataFrame:
 
 
 def get_cdc_all_cause() -> pd.DataFrame:
-    """Loads the cdc all covid data and uses it to compute all cause data (no all cause yet for 2022)"""
+    """Loads the cdc all covid data and uses it to compute all cause data (no NBER all cause yet for 2022)"""
     cdc_all_cause = get_covid_data()
     cdc_all_cause["End Week"] = cdc_all_cause["End Week"].map(pd.to_datetime)
     cdc_all_cause["yearmonth"] = cdc_all_cause["End Week"].map(
