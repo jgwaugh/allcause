@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import httplib2
+import joblib
 import pandas as pd
 from bs4 import BeautifulSoup, SoupStrainer
 
@@ -129,9 +130,15 @@ def get_all_mortality_data(
     year_start: int = 2000, year_end: int = 2022
 ) -> pd.DataFrame:
     """Loads all mortality data"""
-    return pd.concat(
-        [get_yearly_mortality_data(year) for year in range(year_start, year_end)]
-    )
+
+    years = [
+        get_yearly_mortality_data(year)
+        for year in range(year_start, min(year_end, 2022))
+    ]
+
+    if year_end == 2023:
+        years += [get_nber_2022_all_cause_approximation()]
+    return pd.concat(years)
 
 
 def get_vaccination_data() -> pd.DataFrame:
@@ -193,3 +200,24 @@ def get_cdc_all_cause() -> pd.DataFrame:
     cdc_all_cause["monthdth"] = cdc_all_cause.yearmonth.apply(lambda x: x.month)
     cdc_all_cause["year"] = cdc_all_cause.yearmonth.apply(lambda x: x.year)
     return cdc_all_cause
+
+
+def get_nber_2022_all_cause_approximation() -> pd.DataFrame:
+    """
+    Uses a random forest regressor to predict the 2022 NBER
+    all cause mortality estimates based on the CDC data. For
+    more information, see the `modeling` folder in the main project.
+
+    Returns
+    -------
+    pandas Dataframe
+        Dataframe with CDC death counts transformed to NBER sizes
+
+    """
+    cdc_data = get_cdc_all_cause()
+    model = joblib.load(path_to_cache().joinpath("nber_data_approximator"))
+    cdc_data = cdc_data[(cdc_data.year == 2022) & (cdc_data.ager12 != 12)]
+    cdc_data = cdc_data.rename({"death_count": "cdc_death_count"}, axis=1)
+
+    cdc_data["death_count"] = model.predict(cdc_data)
+    return cdc_data.drop("cdc_death_count", axis=1)

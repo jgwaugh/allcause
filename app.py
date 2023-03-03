@@ -52,7 +52,12 @@ def get_excess_deaths_percentage_changes_for_all_age_ranges(
 def build_trend_map(recodes, sexes):
 
     return {
-        sex: {recode: compute_excess_deaths(recode, sex, data) for recode in recodes}
+        sex: {
+            recode: compute_excess_deaths(
+                recode, sex, data, years_test=[2020, 2021, 2022]
+            )
+            for recode in recodes
+        }
         for sex in sexes
     }
 
@@ -66,7 +71,7 @@ recodes = list(range(2, 12))
 inverse_recodes = {v: k for k, v in age_recode_map.items()}
 recode_name_list = [age_recode_map[x] for x in recodes]
 
-data = get_all_mortality_data()
+data = get_all_mortality_data(year_end=2023)
 data["yearmonth"] = data.apply(lambda x: datetime(x.year, x.monthdth, 1), axis=1)
 
 trend_map = build_trend_map(recodes, sexes)
@@ -79,14 +84,13 @@ age_range_time = get_excess_deaths_percentage_changes_for_all_age_ranges(
 
 st.write(
     """
-    # 2021 - 2022 All Cause Mortality Trends
+    # 2020 - 2022 All Cause Mortality Trends
     
     Expected all cause deaths follow a predictable pattern on a year by year basis - this 
-    application uses data from 2020-2019 to estimate the expected deaths in 2020 and 2021. All
-    data comes from [the NBER](https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data).
-      
-    Do the excess death patterns fit a respiratory virus, or is there something else at play? 
-    
+    application uses data from 2000-2019 to estimate the expected deaths in 2020 through 2022. All
+    data comes from [the NBER](https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data)
+    and [the CDC](https://data.cdc.gov/NCHS/Provisional-COVID-19-Deaths-by-Week-Sex-and-Age/vsak-wrfu).
+            
     ## Demographic Percentage Trends
     The following charts compare percentage changes in excess deaths across demographics
     """
@@ -111,7 +115,7 @@ fig = px.bar(
     y="Demographic",
     x="% Excess Deaths Increase",
     orientation="h",
-    title="% Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
+    title="% Changes in Excess Deaths 2020-2022 from 2020-2019 Trends",
 )
 
 st.plotly_chart(fig, caption="Embiggen the chart to see all demographics")
@@ -127,7 +131,7 @@ monthly_fig = px.line(
     x="Month",
     y="% Excess Deaths Increase",
     color="Demographic",
-    title="Monthly % Changes in Excess Deaths 2020-2021 from 2020-2019 Trends",
+    title="Monthly % Changes in Excess Deaths 2020-2022 from 2020-2019 Trends",
 )
 
 st.plotly_chart(monthly_fig)
