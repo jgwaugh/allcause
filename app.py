@@ -87,11 +87,10 @@ st.write(
     # 2021 - 2022 All Cause Mortality Trends
     
     Expected all cause deaths follow a predictable pattern on a year by year basis - this 
-    application uses data from 2020-2019 to estimate the expected deaths in 2020 and 2021. All
-    data comes from [the NBER](https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data).
-      
-    Do the excess death patterns fit a respiratory virus, or is there something else at play? 
-    
+    application uses data from 2020-2019 to estimate the expected deaths in 2020 through 2022. All
+    data comes from [the NBER](https://www.nber.org/research/data/mortality-data-vital-statistics-nchs-multiple-cause-death-data)
+    and [the CDC](https://data.cdc.gov/NCHS/Provisional-COVID-19-Deaths-by-Week-Sex-and-Age/vsak-wrfu).
+            
     ## Demographic Percentage Trends
     The following charts compare percentage changes in excess deaths across demographics
     """
