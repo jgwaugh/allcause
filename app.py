@@ -52,7 +52,12 @@ def get_excess_deaths_percentage_changes_for_all_age_ranges(
 def build_trend_map(recodes, sexes):
 
     return {
-        sex: {recode: compute_excess_deaths(recode, sex, data, years_test=[2020, 2021, 2022]) for recode in recodes}
+        sex: {
+            recode: compute_excess_deaths(
+                recode, sex, data, years_test=[2020, 2021, 2022]
+            )
+            for recode in recodes
+        }
         for sex in sexes
     }
 
