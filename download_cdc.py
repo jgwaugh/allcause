@@ -9,7 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from allcause.data import path_to_cache
 
 SECONDS_SLEEP = 15
-cdc_link = 'https://data.cdc.gov/NCHS/Provisional-COVID-19-Deaths-by-Week-Sex-and-Age/vsak-wrfu'
+cdc_link = "https://data.cdc.gov/NCHS/Provisional-COVID-19-Deaths-by-Week-Sex-and-Age/vsak-wrfu"
 
 ##################################################
 #
@@ -29,8 +29,7 @@ path_to_cache = path_to_cache()
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get(cdc_link)
 
-button = driver.find_elements(By.CSS_SELECTOR,
-                    '.btn.btn-simple.btn-sm.download')
+button = driver.find_elements(By.CSS_SELECTOR, ".btn.btn-simple.btn-sm.download")
 button[0].click()
 
 lnks = driver.find_elements(By.TAG_NAME, "a")
