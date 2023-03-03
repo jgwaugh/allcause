@@ -25,7 +25,7 @@ source get_data.sh
 ```
 
 in the command line. 
-**If you don't need data from 1969, you can skip this step.**
+**If you don't need data from 1969, you can skip this step.**2
 
 ### Explanation
 The files are cumbersome to download. This will take a while. You'll

@@ -7,4 +7,5 @@ seaborn==0.11.2
 plotly_express==0.4.0
 prophet==1.1.2
 streamlit==1.19.0
+scikit-learn==1.2.1
 -e .
