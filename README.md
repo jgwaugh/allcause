@@ -1,6 +1,21 @@
 # All Cause Mortality Modeling
 
-This repo contains all cause mortality data analysis.
+This repo contains all cause mortality data analysis for 2020 - 2022. 
+The basic idea is that all cause mortality follows relatively predictable
+trends on a seasonal and yearly basis - excess deaths can be computed
+by subtracting the expected trend from actual deaths. This methodology 
+is not impacted by reporting bias and can be used to evaluate the excess
+loss of life from 2020 - 2022. 
+
+For example, the chart below shows the expected deaths in blue and the
+actual deaths in red for this time frame:
+
+![alt text](images/trend.png)
+
+
+Most of the data used comes from the National Bureau of Economic Research with
+2022 estimates coming from the Centers for Disease Control. CDC data
+was used when NBER data was unavailable. 
 
 
 ## Setup
@@ -55,4 +70,10 @@ probably do this with a promise, but I've got better things to do.
 
 ## Running
 
-To view excess death data, run `streamlit run app.py` in a terminal shell. 
+To view excess death data, run `streamlit run app.py` in a terminal shell.
+
+You should see something like this:
+
+![alt text](images/app1.png)
+![alt text](images/app2.png)
+![alt text](images/app3.png)
